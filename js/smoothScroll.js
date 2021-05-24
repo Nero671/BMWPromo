@@ -1,12 +1,14 @@
-const smoothScrollElems = document.querySelectorAll('a[href^="#"]:not(a[href="#"])');
+export default (function smoothScroll() {
+  const smoothScrollElems = document.querySelectorAll('a[href^="#"]:not(a[href="#"])');
 
-smoothScrollElems.forEach(item => {
-  item.addEventListener('click', e => {
-    e.preventDefault();
+  smoothScrollElems.forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
 
-    const id = item.getAttribute('href').substring('1');
-    document.getElementById(id).scrollIntoView({
-      behavior: 'smooth'
+      const id = item.getAttribute('href').substring('1');
+      document.getElementById(id).scrollIntoView({
+        behavior: 'smooth'
+      })
     })
   })
-})
+})();

@@ -18,33 +18,56 @@ const sendData = (data, callback, falseCallback) => {
   request.send(data); 
 };
 
-const form = document.querySelectorAll('.form');
+
 
 const formHandler = (form) => {
+  const smallElem = document.createElement('small');
+  form.append(smallElem);
+
   form.addEventListener('submit', e => {
     e.preventDefault();
     const data = {};
+    let flag = true;
 
-    for(const {name, value, phone} of form.elements) {
+    const buttonSubmit = form.querySelector('.button[type="submit"]')
+
+    for(const elem of form.elements) {
+      const {name, value} = elem;
       if(name) {
-        data[name] = value;
+        if(value.trim()) {
+          elem.style.border = '';
+          data[name] = value;
+        } else {
+          elem.style.border = '1px solid red';
+          flag = false;
+          elem.value = '';
+        }
+        
       } 
     }
 
-    const smallElem = document.createElement('small');
+    if(!flag) {
+      return smallElem.textContent = 'Заполните все поля!';
+    }
+
+    
     
     sendData(JSON.stringify(data), 
     (id) => 
       {
         smallElem.innerHTML = 'Ваша заявка №' + id + '! <br> В ближайшее время с вами свяжемся!';
         smallElem.style.color = 'green';
-        form.append(smallElem);
+        buttonSubmit.disabled = true;
+
+        setTimeout(() => {
+          smallElem.textContent = '';
+          buttonSubmit.disabled = false;
+        }, 5000);
       }, 
     (err) => 
       {
         small.innerHTML = 'К сожалению сервер временно недоступен :( <br> Попробуйте отправить заявку позже.';
         smallElem.style.color = 'red';
-        form.append(smallElem);
       }
     );
 
@@ -52,5 +75,9 @@ const formHandler = (form) => {
   })
 }
 
-form.forEach(formHandler);
+export default function sendForm() {
+  const form = document.querySelectorAll('.form');
+  form.forEach(formHandler);
+}
+
 

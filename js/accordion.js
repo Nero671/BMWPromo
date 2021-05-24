@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+export default function accordion() {
   const featureLink = document.querySelectorAll('.feature__link');
   const featureSub = document.querySelectorAll('.feature-sub');
 
@@ -17,4 +17,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   })
-});
+};
